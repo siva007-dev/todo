@@ -1,6 +1,7 @@
 const express =require("express")
 const cors =require("cors")
 const mongoose=require("mongoose")
+require("dotenv").config()
 
 const corsOptions={
     origin:process.env.APPLICATION_URL,
@@ -9,12 +10,13 @@ const corsOptions={
 
 const app= express()
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions))
+
 
 app.use(express.json())
 
 mongoose.connect(process.env.MONGODB_URL).then(()=> console.log("db sucess"))
-.catch(()=> console.log("db failed"))
+.catch((err)=> console.log("db failed"+err))
 
 const fruit=mongoose.model("Fruit",{name:String},"fruit")
 
@@ -37,8 +39,13 @@ app.post("/addfruit",function(req,res){
     newFruit.save().then(()=> console.log("saved to db"))
 })
 
-module.exports = app
+app.get("/", (req, res) => {
+  res.send("API running");
+});
+
+ module.exports = app
+
 
 // app.listen(5000,function(){
-//     console.log("server started....")
-// })
+//      console.log("server started....")
+//  })
