@@ -20,14 +20,14 @@ mongoose.connect(process.env.MONGODB_URL).then(()=> console.log("db sucess"))
 
 const fruit=mongoose.model("Fruit",{name:String},"fruit")
 
-app.get("/fruit",function(req,res)
+app.get("/fruit",async function(req,res)
 {
-    fruit.find().then((retdata)=>{
+    await fruit.find().then((retdata)=>{
         res.send(retdata)
     })
 })
 
-app.post("/addfruit",function(req,res){
+app.post("/addfruit",async function(req,res){
     var newfruit=req.body.newfruit
 
     const newFruit= new fruit(
